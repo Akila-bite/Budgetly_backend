@@ -12,6 +12,11 @@ app.get('/', (req, res) => {
   res.send('Welcome to Budgetly API');
 });
 
+const transactionRoute = require("./routes/transactionRoutes");
+app.use("/api/transactions", transactionRoute);
+
+const UserRoute = require("./routes/transactionRoutes");
+app.use("/api/transactions", UserRoute);
 
 
 
