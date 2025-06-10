@@ -1,25 +1,34 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-
+const cors = require('cors');
 
 dotenv.config();
 
 const app = express();
-app.use(express.json()); // Middleware for parsing JSON
 
+// CORS middleware (allow requests from Vite frontend)
+app.use(cors({
+  origin: 'http://localhost:5173', // Vite dev server default
+  credentials: true
+}));
+
+// JSON parser middleware
+app.use(express.json());
+
+// Root route
 app.get('/', (req, res) => {
   res.send('Welcome to Budgetly API');
 });
 
-const transactionRoute = require("./routes/transactionRoutes");
-app.use("/api/transactions", transactionRoute);
+// Routes
+const transactionRoute = require('./routes/transactionRoute');
+const userRoute = require('./routes/userRoute'); 
 
-const UserRoute = require("./routes/transactionRoutes");
-app.use("/api/transactions", UserRoute);
+app.use('/api/transaction', transactionRoute);
+app.use('/api/user', userRoute); // ✅ Register user routes correctly
 
-
-
+// MongoDB connection + server start
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('✅ Connected to MongoDB Atlas');
@@ -28,4 +37,5 @@ mongoose.connect(process.env.MONGO_URI)
     );
   })
   .catch((err) => console.error('❌ MongoDB connection error:', err));
+
 
