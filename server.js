@@ -28,6 +28,15 @@ const userRoute = require('./routes/userRoute');
 app.use('/api/transaction', transactionRoute);
 app.use('/api/user', userRoute); // ✅ Register user routes correctly
 
+// Catch-all for undefined routes
+app.use((req, res, next) => {
+  res.status(404).json({
+    success: false,
+    message: "Route not found"
+  });
+});
+
+
 // MongoDB connection + server start
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
