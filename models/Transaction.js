@@ -16,9 +16,9 @@ const transactionSchema = new mongoose.Schema({
     required: true,
   },
   category: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Category",
     required: true,
-    enum: ["food", "entertainment", "transport", "toiletries", "utilities", "rent", "cash withdrawal", "household items","car expenses", "other"], 
   },
   description: {
     type: String,
@@ -30,3 +30,4 @@ const transactionSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model("Transaction", transactionSchema);
+

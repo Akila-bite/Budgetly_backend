@@ -24,9 +24,12 @@ app.get('/', (req, res) => {
 // Routes
 const transactionRoute = require('./routes/transactionRoute');
 const userRoute = require('./routes/userRoute'); 
+const categoryRoute = require("./routes/categoryRoute");
 
 app.use('/api/transaction', transactionRoute);
 app.use('/api/user', userRoute); // ✅ Register user routes correctly
+app.use("/api/categories", categoryRoute);
+
 
 // Catch-all for undefined routes
 // app.use((req, res, next) => {
