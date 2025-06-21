@@ -1,15 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const Category = require("../models/Category");
+const { protect } = require("../middleware/authMiddleware");
 
 // @route   POST /api/categories
 // @desc    Create a new category
 // @access  Private
-router.post("/", async (req, res) => {
+router.post("/", protect, async (req, res) => {
   try {
     const { name, type } = req.body;
-
-    // Get the logged-in user's ID from req.user (set by your auth middleware)
     const userId = req.user.id;
 
     const existing = await Category.findOne({ name, user: userId });
@@ -27,7 +26,7 @@ router.post("/", async (req, res) => {
 // @route   GET /api/categories
 // @desc    Get all categories for the logged-in user
 // @access  Private
-router.get("/", async (req, res) => {
+router.get("/", protect, async (req, res) => {
   try {
     const categories = await Category.find({ user: req.user.id });
     res.status(200).json(categories);
@@ -39,7 +38,7 @@ router.get("/", async (req, res) => {
 // @route   DELETE /api/categories/:id
 // @desc    Delete a category
 // @access  Private
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", protect, async (req, res) => {
   try {
     const category = await Category.findById(req.params.id);
 
@@ -47,7 +46,6 @@ router.delete("/:id", async (req, res) => {
       return res.status(404).json({ message: "Category not found" });
     }
 
-    // Check if the category belongs to the logged-in user
     if (category.user.toString() !== req.user.id) {
       return res.status(401).json({ message: "Not authorized" });
     }
@@ -60,4 +58,5 @@ router.delete("/:id", async (req, res) => {
 });
 
 module.exports = router;
+
 

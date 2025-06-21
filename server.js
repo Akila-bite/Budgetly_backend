@@ -27,7 +27,7 @@ const userRoute = require('./routes/userRoute');
 const categoryRoute = require("./routes/categoryRoute");
 
 app.use('/api/transaction', transactionRoute);
-app.use('/api/user', userRoute); // ✅ Register user routes correctly
+app.use('/api/users', userRoute); // ✅ Register user routes correctly
 app.use("/api/categories", categoryRoute);
 
 
