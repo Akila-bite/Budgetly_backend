@@ -8,10 +8,22 @@ dotenv.config();
 const app = express();
 
 // CORS middleware (allow requests from Vite frontend)
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://budgetly-chi.vercel.app' // your deployed frontend
+];
+
 app.use(cors({
-  origin: 'http://localhost:5173', // Vite dev server default
-  credentials: true
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
 }));
+
 
 // JSON parser middleware
 app.use(express.json());
