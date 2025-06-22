@@ -18,6 +18,28 @@ router.get(
   })
 );
 
+
+
+// @route   GET /api/users/me
+// @desc    Get current logged-in user's profile
+// @access  Private
+router.get(
+  "/me",
+  protect,
+  asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id).select("-password");
+
+    if (!user) {
+      res.status(404);
+      throw new Error("User not found");
+    }
+
+    res.status(200).json(user);
+  })
+);
+
+
+
 // @route   GET /api/users/:id
 // @desc    Get a specific user by ID
 // @access  Private
