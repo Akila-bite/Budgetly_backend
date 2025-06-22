@@ -1,7 +1,10 @@
 const express = require("express");
 const router = express.Router();
+const { protect } = require("../middleware/authMiddleware");
 const Goal = require("../models/Goal");
 
+
+router.use(protect);
 // Create a new goal
 router.post("/", async (req, res) => {
   try {
